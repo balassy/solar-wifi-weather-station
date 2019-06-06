@@ -20,11 +20,31 @@ SolarTherm can:
 
 ## On this page
 
-- [Gettings started](#getting-started)
+- [Features](#features)
+- [Getting started](#getting-started)
   - [Hardware](#hardware)
   - [Software](#software)
   - [Configuration](#configuration)
 - [Status LED](#status-led)
+- [Sending measured data to external services](#sending-measured-data-to-external-services)
+  - [Blynk](#blynk)
+    - [Configuration](#configuration-1)
+    - [Troubleshooting](#troubleshooting)
+- [Event notifications](#event-notifications)
+  - [E-mail notifications](#e-mail-notifications)
+- [Over-the-air updates (OTA) (Work In Progress)](#over-the-air-updates-ota-work-in-progress)
+  - [Security disclaimer](#security-disclaimer)
+  - [Prerequisites](#prerequisites)
+  - [Steps](#steps)
+  - [Over-the-air updates from Visual Studio Code](#over-the-air-updates-from-visual-studio-code)
+  - [Troubleshooting](#troubleshooting-1)
+    - [Connection failure](#connection-failure)
+    - [Python.exe is not found](#pythonexe-is-not-found)
+    - [Monitoring the upload](#monitoring-the-upload)
+- [Acknowledgements](#acknowledgements)
+- [About the author](#about-the-author)
+
+(This Table of Contents is generated with [nGitHubTOC](https://imthenachoman.github.io/nGitHubTOC/), but [sompylasar's solution](https://github.com/isaacs/github/issues/215#issuecomment-456598835) is also very usable.)
 
 ## Getting started
 
