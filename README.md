@@ -1,26 +1,78 @@
 # Solar Wi-Fi Weather Station aka. SolarTherm (IoT device)
 
-A solar powered, network connected thermometer implemented with ESP8266 and BME280.
+A solar powered, network connected thermometer implemented with ESP8266, BME280 and Visual Studio Code.
+
+## Features
+
+SolarTherm is:
+- a **wireless** IoT device,
+- that is powered by battery which is charged by **solar energy**,
+- and connects to your **WiFi** network.
+
+SolarTherm can:
+- periodically measure **temperature and humidity**,
+- forward the measured data to **[Blynk](https://www.blynk.cc/)**, **[ThingSpeak](https://thingspeak.com)** and **[MagicMirror](https://github.com/MichMich/MagicMirror)**,
+- signal its status with an **RGB LED**,
+- send status notifications through **[IFTTT](https://ifttt.com/)** (e.g. to e-mail),
+- save battery power by going to **deep sleep** between measurement cycles,
+- render a **configuration webpage** to specify your WiFi credentials,
+- automatically update itself.
+
+## On this page
+
+- [Gettings started](#getting-started)
+  - [Hardware](#hardware)
+  - [Software](#software)
+  - [Configuration](#configuration)
+- [Status LED](#status-led)
+
+## Getting started
+
+### Hardware
+
+Build the hardware recommended by Open Green Energy in his [Solar Powered WiFi Weather Station v2.0](https://www.instructables.com/id/Solar-Powered-WiFi-Weather-Station-V20/) project.
+
+Optional:
+Build the Status LED Shield detailed in the [Status LED](#status-led) section of this guide.
+
+### Software
+
+This project was built and tested with [Visual Studio Code](https://code.visualstudio.com/), but you can also use the [Arduino IDE](https://www.arduino.cc/en/Main/Software) to compile and upload it to your board.
+
+You have to install the following libraries this project depends on to your development environment:
+- [Blynk](https://github.com/blynkkk/blynk-library.git) by Volodymyr Shymanskyy (tested with version 0.6.1)
+- [WiFiManager](https://github.com/tzapu/WiFiManager.git) by tzapu (tested with version 0.14.0).
+
+### Configuration
+
+Rename the `config.sample.h` file to `config.h`, and modify the values accordingly.
+
+See the sections below for more information about the particular features that can be configured in this file.
 
 ## Status LED
 
-SmarTherm uses a single common anode (+) RGB LED to visually signal various events and states of the device:
+SolarTherm uses a single common anode (+) RGB LED to visually signal various events and states of the device:
 
 - Blue: The boot sequence is in progress.
-- Green: Measurement and updating external services is in progress, or a webrequest is being handled.
+- Green: Measurement and updating external services is in progress.
 - Orange: An over-the-air update is in progress, or the device could not connect to the wireless network and entered access point mode during boot.
 - Red: The last over-the-air update has been failed.
 
+To save GPIO pins the default configuration uses on-board Blue LED, so only red and green pins of the RGB LED should be connected to the P3 connector of the board:
+
+![](./wiring/Status-LED-Shield.png)
+
+The code works perfectly without this status LED shield without any modification, so if you want to save battery power you can skip adding this module.
 
 ## Sending measured data to external services
 
-SmarTherm not only collects data, but forwards them to cloud services.
+SolarTherm not only collects data, but forwards them to cloud services.
 
 ### Blynk
 
 [Blynk](https://www.blynk.cc/) is a platform with iOS and Androids apps to control and query IoT devices over the Internet. It is a digital dashboard where you can build a graphic interface for your project by simply dragging and dropping widgets.
 
-An example dashboard for Smartherm may look like this:
+An example dashboard for SolarTherm may look like this:
 
 ![](./doc/screenshot-blynk.png)
 
@@ -31,10 +83,11 @@ To set up Blynk follow these steps:
 1. Download the Blynk app from [Apple AppStore](https://itunes.apple.com/us/app/blynk-control-arduino-raspberry/id808760481?ls=1&mt=8) or [Google PlayStore](https://play.google.com/store/apps/details?id=cc.blynk) to your mobile device.
 2. Start the mobile app and follow the instructions to create a new project.
 3. When you create a new project Blynk sends you an auth token in e-mail. Copy this value from the e-mail and paste it into the `BLYNK_AUTH_TOKEN` parameter in `config.h`.
-4. Compile and deploy SmarTherm, and start your device
-5. Add widgets to your Blynk dashboard as you wish. SmarTherm will feed the data to the following pins:
-- Temperature value is sent to the `V16` virtual pin.
-- Humidity value is sent to the `V17` virtual pin.
+4. Compile and deploy SolarTherm, and start your device
+5. Add widgets to your Blynk dashboard as you wish. SolarTherm will feed the data to the following pins:
+- Temperature value (°C) is sent to the `V16` virtual pin.
+- Humidity value (%) is sent to the `V17` virtual pin.
+- Battery level value (Volt) is sent to the `V18` virtual pin.
 
 #### Troubleshooting
 
@@ -51,11 +104,11 @@ This error is written to the log if the Blynk service rejects your auth token. I
 
 ## Event notifications
 
-SmarTherm is capable of sending notifications about the following events:
+SolarTherm is capable of sending notifications about the following events:
 - An over-the-air update is started.
 - An over-the-air update is finished.
 - An over-the-air update is failed.
-- The device is started.
+- The device is started or an unexpected reset happened.
 
 Events are sent to the free [IFTTT](https://ifttt.com/) Maker service [webhooks](https://ifttt.com/maker_webhooks) in a HTTP POST request. The request has the following parameters:
 - The event name is the value set in the `IFTTT_WEBHOOK_EVENT_NAME` variable in `config.h`.
@@ -68,17 +121,17 @@ Events are sent to the free [IFTTT](https://ifttt.com/) Maker service [webhooks]
 
 IFTTT allows you to forward these events to your e-mail mailbox, to your phone, to trigger an action - almost anything you want, it is totally up to you.
 
-The following configuration shows how to forward the events sent by SmarTherm to your Gmail inbox:
+The following configuration shows how to forward the events sent by SolarTherm to your Gmail inbox:
 
 1. On IFTTT [Create a New Applet](https://ifttt.com/create).
 2. In the "Choose a service (Step 1 of 6)" step select `Webhooks` as the source ("this").
 3. In the "Choose a trigger (Step 2 of 6)" step select `Receive a web request`.
-4. In the "Complete trigger fields (Step 2 of 6)" step enter the event name you specified in `IFTTT_WEBHOOK_EVENT_NAME` value in `config.h`, for example `SmarTherm`, and click the "Create Trigger" button.
+4. In the "Complete trigger fields (Step 2 of 6)" step enter the event name you specified in `IFTTT_WEBHOOK_EVENT_NAME` value in `config.h`, for example `SolarTherm`, and click the "Create Trigger" button.
 5. In the "Choose action service (Step 3 of 6)" step select `Gmail` as the target ("that").
 6. In the "Choose action (Step 4 of 6)" step select `Send an email`.
 7. In the "Complete action fields (Step 5 of 6)" set the fields as the following:
   - Set "To address" to the destination e-mail address.
-  - Set "Subject" to `[SmarTherm] {{Value1}}`
+  - Set "Subject" to `[SolarTherm] {{Value1}}`
   - Set the "Body (optional)" to this value:
   ```
 {{Value2}}<br>
@@ -93,7 +146,7 @@ When: {{OccurredAt}}
 To get your API key, navigate to the https://ifttt.com/maker_webhooks page and click the "Documentation" link on the top. Copy the API key from that page and paste it into the `IFTTT_WEBHOOK_API_KEY` variable in `config.h`.
 
 
-## Over-the-air updates (OTA)
+## Over-the-air updates (OTA) (Work In Progress)
 
 ESP8266 [supports](https://arduino-esp8266.readthedocs.io/en/latest/ota_updates/readme.html) over the air updates out of the box, so you can load the firmware to the ESP using Wi-Fi connection rather than a serial port.
 
@@ -115,7 +168,7 @@ Make sure you read the [Security disclaimer](https://arduino-esp8266.readthedocs
 3. **Important:** Reset the device!
 4. Figure out the IP address of your device.
 5. Start or restart Arduino IDE, and load the new version of your code.
-6. In the **Tools** menu change **Port** to **SmarTherm at 192.168.0.111** (it will vary based on the name you set in `config.h` and the IP address of your device).
+6. In the **Tools** menu change **Port** to **SolarTherm at 192.168.0.111** (it will vary based on the name you set in `config.h` and the IP address of your device).
 7. Click **Upload**. Arduino IDE will ask for the password you set in `config.h`, because you did set one, right?
 
 ### Over-the-air updates from Visual Studio Code
@@ -181,6 +234,12 @@ tools.esptool.network_cmd.windows=C:/Python27/python.exe
 During upload your ESP device will send debug log messages through the serial port. So if OTA does not work, connect your device to your computer, start a serial monitoring tool (e.g. [Termite](https://www.compuphase.com/software_termite.htm)), and start the OTA update through the wireless network.
 
 You can customize the messages in the `ota-updater.cpp` file.
+
+
+## Acknowledgements
+
+Thanks to Open Green Energy for sharing his [Solar Powered WiFi Weather Station v2.0](https://www.instructables.com/id/Solar-Powered-WiFi-Weather-Station-V20/) project.
+
 
 ## About the author
 
