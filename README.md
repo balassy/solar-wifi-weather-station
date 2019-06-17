@@ -44,7 +44,7 @@ SolarTherm can:
 - [Acknowledgements](#acknowledgements)
 - [About the author](#about-the-author)
 
-(This Table of Contents is generated with [nGitHubTOC](https://imthenachoman.github.io/nGitHubTOC/), but [sompylasar's solution](https://github.com/isaacs/github/issues/215#issuecomment-456598835) is also very usable.)
+(This Table of Contents was generated with [nGitHubTOC](https://imthenachoman.github.io/nGitHubTOC/), but [sompylasar's solution](https://github.com/isaacs/github/issues/215#issuecomment-456598835) is also very usable.)
 
 ## Getting started
 

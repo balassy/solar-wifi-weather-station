@@ -75,7 +75,15 @@ void initNetwork() {
   wifiManager.setSaveConfigCallback([&]() {
     led.onWifiManagerAccessPointModeEnded();
   });
-  wifiManager.autoConnect(WIFI_AP_SSID, WIFI_AP_PASSWORD);
+
+  wifiManager.setConfigPortalTimeout(WIFI_CONFIG_PORTAL_TIMEOUT_SECONDS);
+
+  if (!wifiManager.autoConnect(WIFI_AP_SSID, WIFI_AP_PASSWORD)) {
+    Serial.println("Failed to connect to the network and the WiFi configuration portal hit inactivity timeout. Restarting the device in 3 seconds and trying again...");
+    delay(3000);
+    ESP.restart();
+  }
+
   Serial.printf("DONE. IP address: %s, MAC address: %s\n", WiFi.localIP().toString().c_str(), WiFi.macAddress().c_str());
 }
 
@@ -129,9 +137,6 @@ void sendStartNotification() {
 
   if (resetReason != "Deep-Sleep Wake") {
     Serial.println("Sending notification about unexpected start...");
-    String ipAddress = WiFi.localIP().toString();
-    String macAddress = WiFi.macAddress();
-
     String message = String("Your device is starting. Reason: ") +  resetReason + " (" + ESP.getResetInfo() + ")";
     ifttt.triggerEvent(IFTTT_WEBHOOK_EVENT_NAME, "Starting", message);
     Serial.println("DONE.");
