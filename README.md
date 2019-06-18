@@ -15,7 +15,7 @@ SolarTherm can:
 - signal its status with an **RGB LED**,
 - send status notifications through **[IFTTT](https://ifttt.com/)** (e.g. to e-mail),
 - save battery power by going to **deep sleep** between measurement cycles,
-- render a **configuration webpage** to specify your WiFi credentials,
+- render a **configuration webpage** to set your WiFi credentials,
 - automatically update itself.
 
 ## On this page
@@ -30,6 +30,11 @@ SolarTherm can:
   - [Blynk](#blynk)
     - [Configuration](#configuration-1)
     - [Troubleshooting](#troubleshooting)
+  - [Thingspeak](#thingspeak)
+    - [Configuration](#configuration-2)
+  - [MagicMirror](#magicmirror)
+    - [Configuration](#configuration-3)
+    - [Limitation](#limitation)
 - [Event notifications](#event-notifications)
   - [E-mail notifications](#e-mail-notifications)
 - [Over-the-air updates (OTA) (Work In Progress)](#over-the-air-updates-ota-work-in-progress)
@@ -68,6 +73,10 @@ You have to install the following libraries this project depends on to your deve
 Rename the `config.sample.h` file to `config.h`, and modify the values accordingly.
 
 See the sections below for more information about the particular features that can be configured in this file.
+
+After turning on the device the first time it will enter into configuration mode which is indicated by the orange LED, if you added the Status LED Shield (see below). In configuration mode SolarTherm acts as a WiFi access point. The SSID name and the password to connect to this access point can be specified in the `WIFI_AP_SSID` and `WIFI_AP_PASSWORD` parameters in `config.h`. Use your computer to connect to this network, then navigate to `http://192.168.4.1` in your web browser to open the configuration portal where you can select the preferred wireless network and set the WiFi password for SolarTherm.
+
+Important: SolarTherm will wait for user interaction only for 60 minutes on the configuration portal, then restarts automatically. This timeout can be configured in the `WIFI_CONFIG_PORTAL_TIMEOUT_SECONDS` parameter in `config.h`.
 
 ## Status LED
 
@@ -122,6 +131,48 @@ Sending data to Blynk...DONE.
 This error is written to the log if the Blynk service rejects your auth token. It can happen if you made a typo, or (and this is interesting) also if you copy-pasted the token from the e-mail. I recommend deleting and manually typing back the first and the last few characters, including the opening and closing quotation marks. (I know it sounds crazy, but worked for me and others also.)
 
 
+### Thingspeak
+
+[ThingSpeak](https://thingspeak.com) is an open-source Internet of Things (IoT) application and API to store and retrieve data from things using the HTTP protocol over the Internet or via a Local Area Network.
+
+An example dashboard for SolarTherm may look like this:
+
+![](./doc/screenshot-thingspeak.png)
+
+#### Configuration
+
+To display SolarTherm data on ThingSpeak you have to [create a new channel](https://thingspeak.com/channels/new). Most of the fields are self-explanatory on this form, however you have to be careful to set these fields accordingly:
+- Field 1: Temperature
+- Field 2: Humudity
+- Field 3: Battery level
+
+After creating the channel navigate to the **API Keys** tab and copy-paste the **Write API Key** into the `THINGSPEAK_API_KEY` parameter in `config.h`.
+
+Add widgets and visualizations to your channel as you wish and enjoy! 
+
+### MagicMirror
+
+[Magic Mirror](https://magicmirror.builders/) (known as MagicMirror²) is an open source, modular smart mirror platform, and SolarTherm is able to push measured temperature and humidity data to MagicMirror to display them immediately.
+
+An example display of the measured data on MagicMirror may look like this:
+
+![](./doc/screenshot-magicmirror.png)
+
+#### Configuration
+
+To set up the SolarTherm-MagicMirror connection follow these steps:
+
+1. Install the [MMM-RemoteTemperature](https://github.com/balassy/MMM-RemoteTemperature) module on your MagicMirror.
+2. Configure the module as you prefer.
+3. In SolarTherm's `config.h` specify the protocol, address and host in the `MAGIC_MIRROR_HOST` parameter.
+
+That's it! In every measurement cycle SolarTherm will push the data to your MagicMirror.
+
+#### Limitation
+
+At the moment SolarTherm does not support the `sensorId` parameter of the MMM-RemoteTemperature module.
+
+
 ## Event notifications
 
 SolarTherm is capable of sending notifications about the following events:
@@ -167,6 +218,8 @@ To get your API key, navigate to the https://ifttt.com/maker_webhooks page and c
 
 
 ## Over-the-air updates (OTA) (Work In Progress)
+
+**IMPORTANT: The OTA update functionality is being rewritten due to its conflict with the deep sleep battery saver functionality of the module. The sections below are outdated.**
 
 ESP8266 [supports](https://arduino-esp8266.readthedocs.io/en/latest/ota_updates/readme.html) over the air updates out of the box, so you can load the firmware to the ESP using Wi-Fi connection rather than a serial port.
 
