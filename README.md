@@ -103,7 +103,7 @@ SolarTherm not only collects data, but forwards them to cloud services.
 
 An example dashboard for SolarTherm may look like this:
 
-![](./doc/screenshot-blynk.png)
+![](./doc/screenshot-blynk-smaller.png)
 
 #### Configuration
 
