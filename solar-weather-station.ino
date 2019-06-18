@@ -76,11 +76,17 @@ void initNetwork() {
     led.onWifiManagerAccessPointModeEnded();
   });
 
+  // Configuration portal timeout and automatic restart is required because sometimes the device does not find the
+  // network credentials after booting up, but after a restart it can connect to the network without any issue.
+  // This ensures that the device retries connecting to the network without waiting for user interaction.
   wifiManager.setConfigPortalTimeout(WIFI_CONFIG_PORTAL_TIMEOUT_SECONDS);
 
   if (!wifiManager.autoConnect(WIFI_AP_SSID, WIFI_AP_PASSWORD)) {
     Serial.println("Failed to connect to the network and the WiFi configuration portal hit inactivity timeout. Restarting the device in 3 seconds and trying again...");
     delay(3000);
+
+    // The restart() function triggers a more clean reboot than reset(), so this one is the preferred.
+    // Read more: https://www.pieterverhees.nl/sparklesagarbage/esp8266/130-difference-between-esp-reset-and-esp-restart
     ESP.restart();
   }
 
