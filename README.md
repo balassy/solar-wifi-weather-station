@@ -152,7 +152,7 @@ Add widgets and visualizations to your channel as you wish and enjoy!
 
 ### MagicMirror
 
-[Magic Mirror](https://magicmirror.builders/) (known as MagicMirror²) is an open source, modular smart mirror platform, and SolarTherm is able to push measured temperature and humidity data to MagicMirror to display them immediately.
+[Magic Mirror](https://magicmirror.builders/) (known as MagicMirror²) is an open source, modular smart mirror platform, and SolarTherm is able to push measured temperature, humidity and battery level data to MagicMirror to display them immediately.
 
 An example display of the measured data on MagicMirror may look like this:
 

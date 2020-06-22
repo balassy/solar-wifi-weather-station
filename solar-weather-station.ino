@@ -172,7 +172,7 @@ void measureAndUpdateTargets() {
   Serial.println("DONE.");
 
   Serial.println("Sending data to MagicMirror...");
-  magicMirror.sendTemperature(m.temperature, m.humidity);
+  magicMirror.sendTemperature(m.temperature, m.humidity, voltage);
   Serial.println("DONE.");
 
   Serial.print("Sending data to Blynk...");
