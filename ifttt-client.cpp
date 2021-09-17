@@ -21,8 +21,9 @@ void IftttClient::triggerRawEvent(String eventName, String value1, String value2
   String requestBody = "value1=" + value1 + "&value2=" + value2 + "&value3=" + value3;
   Serial.println("IftttClient: HTTP request body: " + requestBody);
 
+  WiFiClient wifiClient;
   HTTPClient http;
-  http.begin(url);
+  http.begin(wifiClient, url);
   http.addHeader("Content-Type", "application/x-www-form-urlencoded");
   
   int statusCode = http.POST(requestBody);

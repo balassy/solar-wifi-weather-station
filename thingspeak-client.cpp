@@ -13,8 +13,9 @@ void ThingSpeakClient::writeField(String field1Value, String field2Value, String
   String requestBody = "api_key=" + _apiKey + "&field1=" + field1Value + "&field2=" + field2Value + "&field3=" + field3Value + "&status=" + statusMessage;
   Serial.println("ThingSpeakClient: HTTP request body: " + requestBody);
 
+  WiFiClient wifiClient;
   HTTPClient http;
-  http.begin(url);
+  http.begin(wifiClient, url);
   http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
   int statusCode = http.POST(requestBody);

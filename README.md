@@ -65,8 +65,11 @@ Build the Status LED Shield detailed in the [Status LED](#status-led) section of
 This project was built and tested with [Visual Studio Code](https://code.visualstudio.com/), but you can also use the [Arduino IDE](https://www.arduino.cc/en/Main/Software) to compile and upload it to your board.
 
 You have to install the following libraries this project depends on to your development environment:
-- [Blynk](https://github.com/blynkkk/blynk-library.git) by Volodymyr Shymanskyy (tested with version 0.6.1)
-- [WiFiManager](https://github.com/tzapu/WiFiManager.git) by tzapu (tested with version 0.14.0).
+- [Blynk](https://github.com/blynkkk/blynk-library.git) by Volodymyr Shymanskyy (tested with version 1.0.1).
+- [WiFiManager](https://github.com/tzapu/WiFiManager.git) by tzapu (tested with version 0.16.0).
+- [Adafruit Unified Sensor](https://github.com/adafruit/Adafruit_Sensor) by Adafruit (tested with version 1.1.4).
+- [Adafruit BusIO](https://github.com/adafruit/Adafruit_BusIO) by Adafruit (tested with version 1.9.1).
+- [Adafruit BME280 Library](https://github.com/adafruit/Adafruit_BME280_Library) by Adafruit (tested with version 2.2.1).
 
 ### Configuration
 

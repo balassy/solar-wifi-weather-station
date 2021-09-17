@@ -24,8 +24,9 @@ void MagicMirrorClient::sendTemperature(float temperature, float humidity, float
   String requestBody = "{ \"temp\": " + String(temperatureRounded) + ", \"humidity\": " + String(humidityRounded) + ", \"battery\": " + String(voltagePercentageRounded) + " }";
   Serial.println("MagicMirrorClient: HTTP request body: " + requestBody);
 
+  WiFiClient wifiClient;
   HTTPClient http;
-  http.begin(url);
+  http.begin(wifiClient, url);
   http.addHeader("Content-Type", "application/json");
   
   int statusCode = http.POST(requestBody);

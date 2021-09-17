@@ -11,5 +11,6 @@
       "vector": "cpp",
       "initializer_list": "cpp",
       "functional": "cpp"
-    }
+    },
+    "C_Cpp.intelliSenseEngine": "Tag Parser"
 }

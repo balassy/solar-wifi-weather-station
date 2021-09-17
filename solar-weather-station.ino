@@ -69,10 +69,10 @@ void initLed() {
 
 void initNetwork() {
   Serial.printf("Initializing connection to the network with MAC address %s using WiFiManager (SSID: %s)...\n", WiFi.macAddress().c_str(), WIFI_AP_SSID);
-  wifiManager.setAPCallback([&](WiFiManager *mgr) {
+  wifiManager.setAPCallback([](WiFiManager *mgr) {
     led.onWifiManagerAccessPointModeStarted();
   });
-  wifiManager.setSaveConfigCallback([&]() {
+  wifiManager.setSaveConfigCallback([]() {
     led.onWifiManagerAccessPointModeEnded();
   });
 
