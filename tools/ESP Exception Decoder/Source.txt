@@ -1,0 +1,12 @@
+﻿ESP Exception Decoder plugin for Arduino IDE
+
+Source: https://github.com/me-no-dev/EspExceptionDecoder
+
+Install and use:
+1. Unzip to C:\Users\<USERNAME>\Documents\Arduino\tools\EspExceptionDecoder\tool\EspExceptionDecoder.jar
+2. Restart Arduino IDE
+3. Start ESP Exception Decoder from the Tools menu of the Arduino IDE
+4. Copy and paste a stack trace from the Serial Monitor
+
+
+If you're asked for an ELF file, it simply means you have not yet compiled the sketch, so the program doesn't know where to look for debug traces... Just recompile and open the EspExceptionDecoder.

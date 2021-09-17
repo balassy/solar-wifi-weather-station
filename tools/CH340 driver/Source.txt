@@ -1,0 +1,5 @@
+﻿CH340 Driver
+
+https://www.wemos.cc/en/latest/ch340_driver.html
+
+Use the INF file to install, not the EXE!
